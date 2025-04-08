@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Карта точек доставки</title>
+  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+  <style>
+    html, body, #map {
+      width: 100%; height: 100%; padding: 0; margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+    ymaps.ready(init);
+    function init(){
+      var myMap = new ymaps.Map("map", {
+        center: [55.75, 37.61],
+        zoom: 4
+      });
+
+      var points = [
+        { coords: [48.277197, 46.176145], address: "Астраханская область, Ахтубинск, Ленинградская, 1" },
+        { coords: [46.305539, 44.305233], address: "Республика Калмыкия, Элиста, им. Петра Анацкого пр-кт, 6" },
+        { coords: [46.313837, 44.217028], address: "Республика Калмыкия, Элиста, В.И. Ленина, 9с7" },
+        { coords: [48.764675, 44.817066], address: "Волгоградская область, Волжский, 40 лет победы, 69А" },
+        { coords: [46.358873, 48.069749], address: "Астрахань, Минусинская, 8" }
+      ];
+
+      points.forEach(function(point) {
+        var placemark = new ymaps.Placemark(point.coords, {
+          balloonContent: point.address
+        }, {
+          preset: 'islands#icon',
+          iconColor: '#0095b6'
+        });
+
+        placemark.events.add('click', function () {
+          var encodedAddress = encodeURIComponent(point.address);
+          window.open("https://t.me/RS_EXPRESS_X5bot?start=" + encodedAddress, '_blank');
+        });
+
+        myMap.geoObjects.add(placemark);
+      });
+    }
+  </script>
+</body>
+</html>
